@@ -253,5 +253,108 @@ describe('POST /comp/create 요청 시,', () => {
                 })
         })
     })
+    describe('Competition Create 실패 시,', () => {
+        it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .post('/comp/create')
+                .send({comp_type, location, category, title, ended_at, max_people, require_money}) 
+                .end((err, res) => {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message', 'User is not Authenticated');
+                    done();
+                })
+        })
+        it('정확한 Json Key들이 없으면 400을 반환한다.', (done) => {
+            request(app)   
+                .post('/comp/create')
+                .send({comp_type, location, category, title, ended_at}) // require_money, max_people 누락
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'Incorrect Json Key');
+                    done();
+                })
+            })
+    })
 })
 
+describe('PUT /comp/create/?pk=1 요청 시,', () =>{
+    const comp_pk = 1;
+    const money = 1000;
+    describe('Competition PUT 성공 시,', () => {
+        it('user id와 경쟁의 total_money를 반환한다.', (done) => {
+            request(app)
+                .put('/comp/join')
+                .set('Cookie', cookie)
+                .send({comp_pk, money})
+                .end((err, res) => {
+                    res.status.should.be.equal(200);
+                    res.body.should.have.property('message', 'Join Success!');
+                    done();
+                })
+        })
+    })
+    describe('Competition PUT 실패 시,', () => {
+        it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .put('/comp/join')
+                .send({comp_pk, money})
+                .end((err, res) => {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message', 'User is not Authenticated');
+                    done();
+                })
+        })
+        it('Competition PK에 해당하는 객체가 없을 시, 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .put('/comp/join')
+                .send({comp_pk, money})
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'Competition Object Not Found');
+                    done();
+                })
+        })
+    })
+})
+
+describe('Delete /comp/delete/?pk=1 요청 시,', () =>{
+    const comp_pk = 1;
+    describe('Competition Delete 성공 시,', () =>{
+        it('성공 메세지를 반환한다.', (done) =>{
+            request(app)
+                .delete('/comp/delete')
+                .send({comp_pk})
+                .end((err, res) => {
+                    res.status.should.be.equal(200);
+                    res.body.should.have.property('message', 'Delete Success!');
+                    done();
+                })
+        })
+    })
+    describe('Competition Delete 실패 시,', () => {
+        it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .put('/comp/delete')
+                .send({comp_pk})
+                .end((err, res) => {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message', 'User is not Authenticated');
+                    done();
+                })
+        })
+        it('Competition PK에 해당하는 객체가 없을 시, 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .put('/comp/join')
+                .send({comp_pk, money})
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'Competition Object Not Found');
+                    done();
+                })})
+
+    })
+
+})
