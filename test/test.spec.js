@@ -248,7 +248,7 @@ describe('POST /comp/create 요청 시,', () => {
                 .set('Cookie', cookie)
                 .end((err, res) => { 
                     res.status.should.be.equal(200);
-                    res.body.should.have.properties({location, title, find_people, body, category, address});
+                    res.body.should.have.properties({comp_type, location, category, title, ended_at, max_people, require_money});
                     done();
                 })
         })
@@ -319,13 +319,14 @@ describe('PUT /comp/create/?pk=1 요청 시,', () =>{
     })
 })
 
-describe('Delete /comp/delete/?pk=1 요청 시,', () =>{
+describe('DELETE /comp/delete/?pk=1 요청 시,', () =>{
     const comp_pk = 1;
     describe('Competition Delete 성공 시,', () =>{
         it('성공 메세지를 반환한다.', (done) =>{
             request(app)
                 .delete('/comp/delete')
                 .send({comp_pk})
+                .set('Cookie', cookie)
                 .end((err, res) => {
                     res.status.should.be.equal(200);
                     res.body.should.have.property('message', 'Delete Success!');
@@ -336,7 +337,7 @@ describe('Delete /comp/delete/?pk=1 요청 시,', () =>{
     describe('Competition Delete 실패 시,', () => {
         it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
             request(app)
-                .put('/comp/delete')
+                .delete('/comp/delete')
                 .send({comp_pk})
                 .end((err, res) => {
                     res.status.should.be.equal(401);
@@ -346,15 +347,63 @@ describe('Delete /comp/delete/?pk=1 요청 시,', () =>{
         })
         it('Competition PK에 해당하는 객체가 없을 시, 에러 메세지를 반환한다.', (done) => {
             request(app)
-                .put('/comp/join')
-                .send({comp_pk, money})
+                .delete('/comp/delete')
+                .send({comp_pk})
                 .set('Cookie', cookie)
                 .end((err, res) => {
                     res.status.should.be.equal(400);
                     res.body.should.have.property('message', 'Competition Object Not Found');
                     done();
-                })})
-
+                })
+        })
+        it('경쟁을 만든 Host가 아닐 시, 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .delete('/comp/delete')
+                .send({comp_pk})
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'You are not the owner of this Competition.');
+                    done();
+                })
+        })
     })
 
+})
+
+describe('GET /comp/list 요청 시,', () => {
+    it('현재 있는 Competition List를 반환한다.', (done) => {
+        request(app)
+            .get('/comp/list')
+            .end((err, res) => {
+                res.status.should.be.equal(200);
+                res.body.should.have.properties('message', 'You are not the owner of this Competition.');
+                res.body.should.have.properties({comp_type, location, category, title, ended_at, max_people, require_money});
+            })
+    })
+})
+
+describe('GET /comp/:id 로 요청 시', () => {
+    describe('GET Competition Detail 성공 시', () =>{
+        it('id의 Competition Object를 가져온다.', (done) => {
+            request(app)
+                .get('/comp/1')
+                .end((err, res) => {
+                    res.status.should.be.equal(200);
+                    res.body.should.have.property('id', 1);
+                    done();
+                })
+        })
+    })
+    describe('GET Comp Detail 실패 시', () => {
+        it('id가 숫자로 들어오지 않았을 때', (done) => {
+            request(app)
+                .get('/comp/aw')
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'Id is not number');
+                    done();
+                })
+        })
+    })
 })
