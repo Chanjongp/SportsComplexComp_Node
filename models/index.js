@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 // const fs = require('fs');
 // const path = require('path');
@@ -41,9 +41,7 @@
 const path = require('path');
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
-const config = require(
-  path.join(__dirname + '..', 'config', 'config.json')
-)[env];
+const config = require('../config/config.json')[env];
 const db = {};
 const sequelize = new Sequelize(
   config.database, config.username, config.password, config
@@ -52,4 +50,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.User = require('./User')(sequelize, Sequelize);
+db.Meeting = require('./Meeting')(sequelize, Sequelize);
+
 module.exports = db;
