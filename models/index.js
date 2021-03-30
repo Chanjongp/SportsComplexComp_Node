@@ -52,6 +52,6 @@ db.Sequelize = Sequelize;
 db.User = require('./User')(sequelize, Sequelize);
 db.Meeting = require('./Meeting')(sequelize, Sequelize);
 db.Competition = require('./Competition')(sequelize, Sequelize);
-
+db.Comment = require('./Comment')(sequelize, Sequelize);
 
 module.exports = db;

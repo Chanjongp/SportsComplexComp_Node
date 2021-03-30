@@ -21,7 +21,8 @@ module.exports = ((sequelize, DataTypes) => {
         },
 
         address : {
-            type : Sequelize.STRING(50)
+            type : Sequelize.STRING(50),
+            allowNull: true,
         },
         
     })

@@ -29,4 +29,5 @@ module.exports = ((sequelize, DataTypes) => {
             defaultvalue : 0
         },
     });
+    return Competition;
 })
