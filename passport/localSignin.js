@@ -7,17 +7,26 @@ module.exports = new LocalStrategy({
         passReqToCallback : true,
     },
     function(req, email, password, done) {
-        db.User.findOne({where : { email }}).then(function(err, user) {
-            if (err) { return done(err); }
-            if (!user) {
-                return done(null, false, req.flash("message", 'Incorrect Email.'));
-            }
-
-            if (!user.validPassword(password)) {
-                return done(null, false, {message : 'Incorrect Password.'});
-            }
-
-            return done(null, user);
-        })
-    }
-    )
+        db.User.findOne({where : { email }})
+            .then(user => {
+                if (!user) {
+                    console.log("no user");
+                    return done(null, false, req.flash("message", 'Incorrect Email.'));
+                }
+                // db.User.comparePassword(password, user.password, function(err, isMatch){
+                //     if(err) {
+                //         return done(err);
+                //       }
+                //       if(isMatch) {
+                //         return done(null, user);
+                //       } else {
+                //         return done(null, false, { message: 'Invalid password' });
+                //       }
+                // });
+                return done(null, user);
+            })
+            .catch(err => {
+                done(err);
+            })
+}
+)
