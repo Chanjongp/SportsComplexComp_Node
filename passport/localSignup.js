@@ -8,17 +8,21 @@ module.exports = new LocalStrategy ({
 
 }, function(req, email, password, done) {
     db.User.findOne({where : {email}})
-        .then(function(err, user) {
-            if (err) { return done(err); }
+        .then(user => {
             if (user) {
                 return done(null, false, req.flash("message", "User already exists"));
             } else {
                 db.User.create({email, password})
-                    .then(function(err, user) {
-                        if (err) { return done(err); }
+                    .then(user => {
                         return done(null, user);
-                });
+                    })
+                    .catch(err => {
+                        done(err);
+                    });
             }
 
+        })
+        .catch(err => {
+            done(err);
         });    
 })
