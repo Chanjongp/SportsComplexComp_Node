@@ -12,6 +12,6 @@ module.exports = passport => {
         })
     });
 
-    passport.use('local-signin', signin, {passReqToCallback : true});
-    passport.use('local-signup', signup, {passReqToCallback : true});
+    passport.use('local-signin', signin);
+    passport.use('local-signup', signup);
 }
