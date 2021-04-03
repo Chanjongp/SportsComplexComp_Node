@@ -1,31 +1,30 @@
-const Sequelize = require('sequelize');
 
 module.exports = ((sequelize, DataTypes) => {
     const Competition = sequelize.define('Competition', {
         comp_type : {
-            type : Sequelize.STRING(20),
+            type : DataTypes.STRING(20),
         },
         location : {
-            type : Sequelize.STRING(20),
+            type : DataTypes.STRING(20),
         },
         category : {
-            type : Sequelize.STRING(20),
+            type : DataTypes.STRING(20),
         },
         title : {
-            type : Sequelize.STRING(30),
+            type : DataTypes.STRING(30),
         },
         ended_at : {
-            type : Sequelize.DATE(),
+            type : DataTypes.DATE(),
             
         },
         max_people : {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
         },
         require_money : {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
         },
         total_money : {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             defaultvalue : 0
         },
     });

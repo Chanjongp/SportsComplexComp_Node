@@ -1,41 +1,20 @@
-const Sequelize = require('sequelize');
-// const { sequelize } = require('.');
+const { User } = require(".");
 
-// const sequelize = new Sequelize('sports_development', 'root', 'ckswhd123~')
-
-// const User = sequelize.define('User', {
-//     email : {
-//         type : Sequelize.STRING(40),
-//         unique : true,
-//     },
-//     nickname : {
-//         type : Sequelize.STRING(30),
-//     },
-    
-//     password : {
-//         type: Sequelize.STRING(100),
-//     },
-//     location : {
-//         type : Sequelize.STRING(10),
-//         defaultValue : '서울'
-//     }
-
-// })
 module.exports = ((sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         email : {
-            type : Sequelize.STRING(40),
+            type : DataTypes.STRING(40),
             unique : true,
         },
         nickname : {
-            type : Sequelize.STRING(30),
+            type : DataTypes.STRING(30),
         },
         
         password : {
-            type: Sequelize.STRING(100),
+            type: DataTypes.STRING(100),
         },
         location : {
-            type : Sequelize.STRING(10),
+            type : DataTypes.STRING(10),
             defaultValue : '서울'
         }
     });
