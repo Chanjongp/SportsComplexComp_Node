@@ -6,43 +6,38 @@ var CompetitionCtrl = require('../controllers/CompetitionCtrl');
 var CommentCtrl = require('../controllers/CommentCtrl');
 var MeetingCtrl = require('../controllers/MeetingCtrl');
 
-router.get('/%20', function(req, res) {
-	const id = req.user;
-	return res.status(201).json({id}).end();
+//Success Callback
+router.get('/', function(req, res) {
+    const user = req.user;
+    return req.login(user, loginError => {
+        if (loginError) {
+            console.log(loginError);
+            return res.status(401).json({loginError}).end();
+        }
+        return res.json({ user });
+    })
 });
 
-router.post('/login', passport.authenticate('local-signin', 
-    {successRedirect : '/ ',failureRedirect : '/error', failureFlash : true,}));
-
+//Error Callback
 router.get('/error', function(req, res){
     const message = req.flash('message');
-    console.log("!2312312");
-    // console.log(message[0]);
     return res.status(401).json({message : message[0]}).end();
-    // return message;
 });
 
-// router.get('/login', function(req, res, next) {
-//     passport.authenticate('local-signin', function(err, user, info) {
-//       if (err) { return next(err); }
-//       if (!user) { return res.redirect('/login'); }
-//       req.logIn(user, function(err) {
-//         if (err) { return next(err); }
-//         return res.redirect('/users/' + user.username);
-//       });
-//     })(req, res, next);
-//   });
+// Signin
+router.post('/login', passport.authenticate('local-signin', 
+    {successRedirect : '/',failureRedirect : '/error', failureFlash : true,}));
 
-
+// Signup
 router.post('/signup', passport.authenticate('local-signup', 
-    {successRedirect : '/ ',failureRedirect : '/error', failureFlash : true,}));
+    {successRedirect : '/',failureRedirect : '/error', failureFlash : true,}));
 
-router.get('/signup', function(req, res){
-    const message = req.flash('message');
-    console.log(message[0]);
-    return res.status(401).json({message : message[0]}).end();
-    // return message;
-});
-
+router.get('/logout', (req, res) => {
+    if(!req.user) {
+        return res.status(401).json({"message" : "Not logged in."});
+    }
+    req.logout();
+    return res.status(200).json({"message" : "Logout Success"});
+})
 
 module.exports = router;

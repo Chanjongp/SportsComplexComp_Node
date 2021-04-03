@@ -15,21 +15,6 @@ module.exports = passport => {
         }).catch(done);
     });
 
-    // passport.serializeUser(function(user, done) {
-    //     done(null, user.id);
-    //   });
-      
-    //   // from the user id, figure out who the user is...
-    //   passport.deserializeUser(function(userId, done){
-    //     models.User
-    //       .find({ where: { id: userId } })
-    //       .then(function(user){
-    //         done(null, user);
-    //       }).catch(function(err){
-    //         done(err, null);
-    //       });
-    //   });
-
     passport.use('local-signin', signin);
     passport.use('local-signup', signup);
 }
