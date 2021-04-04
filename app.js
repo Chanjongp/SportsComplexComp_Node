@@ -31,9 +31,4 @@ app.use(routes.user, userRouter);
 app.use(routes.home, baseRouter);
 passportConfig(passport);
 
-app.listen(3000, () => {
-    console.log('Server is running on 3000 port');
-    sequelize.sync();
-});
-
 module.exports = app;

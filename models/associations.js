@@ -1,50 +1,49 @@
-const db = require('./index');
+// const db = require('./index');
 
+// // Meeting
 
-// Meeting
+// db.User.hasOne(db.Meeting, {
+//     'foreignKey' : 'host',
+//     'onDelete' : 'cascade',
+// });
+// db.Meeting.belongsTo(db.User, {
+//     'foreignKey' : 'host',
+// });
 
-db.User.hasOne(db.Meeting, {
-    'foreignKey' : 'host',
-    'onDelete' : 'cascade',
-});
-db.Meeting.belongsTo(db.User, {
-    'foreignKey' : 'host',
-});
+// // Competition
 
-// Competition
+// db.User.hasOne(db.Competition, {
+//     'foreignKey' : 'host',
+//     'onDelete' : 'cascade',
+// });
+// db.Competition.belongsTo(db.User, {
+//     'foreignKey' : 'host',
+// })
 
-db.User.hasOne(db.Meeting, {
-    'foreignKey' : 'host',
-    'onDelete' : 'cascade',
-});
-db.Competition.belongsTo(db.User, {
-    'foreignKey' : 'host',
-})
+// db.User.hasMany(db.Competition, {
+//     'foreignkey' : 'joined_people',
+// })
 
-db.User.hasMany(db.Meeting, {
-    'foreignkey' : 'joined_people',
-})
+// db.Competition.belongsTo(db.User, {
+//     'foreignKey' : 'joined_people',
+// })
 
-db.Competition.belongsTo(db.User, {
-    'foreignKey' : 'joined_people',
-})
+// // Comment
 
-// Comment
+// db.User.hasOne(db.Comment, {
+//     'foreignkey' : 'user',
+//     'onDelete' : 'cascade',
+// })
 
-db.User.hasOne(db.Comment, {
-    'foreignkey' : 'user',
-    'onDelete' : 'cascade',
-})
+// db.Comment.belongsTo(db.User, {
+//     'foreignKey' : 'user',
+// })
 
-db.Comment.belongsTo(db.User, {
-    'foreignkey' : 'user',
-})
+// db.Meeting.hasOne(db.Comment, {
+//     'foreignKey' : 'meeting',
+//     'onDelete' : 'cascade',
+// })
 
-db.Meeting.hasOne(db.Comment, {
-    'foreignkey' : 'meeting',
-    'onDelete' : 'cascade',
-})
-
-db.Comment.belongsTo(db.Meeting, {
-    'foreignkey' : 'meeting'
-})
+// db.Comment.belongsTo(db.Meeting, {
+//     'foreignKey' : 'meeting'
+// })
