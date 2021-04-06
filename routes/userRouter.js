@@ -23,11 +23,11 @@ userRouter.get('/error', function(req, res){
 
 // Signin
 userRouter.post('/login', passport.authenticate('local-signin', 
-    {successRedirect : '/',failureRedirect : 'accounts/error', failureFlash : true,}));
+    {successRedirect : '/',failureRedirect : '/error', failureFlash : true,}));
 
 // Signup
 userRouter.post('/signup', passport.authenticate('local-signup', 
-    {successRedirect : 'accounts/',failureRedirect : 'accounts/error', failureFlash : true,}));
+    {successRedirect : '/',failureRedirect : '/error', failureFlash : true,}));
 
 userRouter.get('/logout', (req, res) => {
     if(!req.user) {

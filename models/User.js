@@ -1,3 +1,5 @@
+const bcrypt = require('bcrypt-nodejs');
+
 module.exports = ((sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         email : {
@@ -14,6 +16,20 @@ module.exports = ((sequelize, DataTypes) => {
         location : {
             type : DataTypes.STRING(10),
             defaultValue : '서울'
+        }
+    }, 
+    //option
+    {
+        classMethods : {
+            comparePassword : function(password, hash, callback) {
+                bcrypt.compare(password, hash, function(err, isMAtch) {
+                    if(err) {
+                        return callback(err, null);
+                    } else {
+                        callback(null, isMAtch);
+                    }
+                });
+            }
         }
     });
     return User;

@@ -13,16 +13,16 @@ module.exports = new LocalStrategy({
                     console.log("no user");
                     return done(null, false, req.flash("message", 'Incorrect Email.'));
                 }
-                // db.User.comparePassword(password, user.password, function(err, isMatch){
-                //     if(err) {
-                //         return done(err);
-                //       }
-                //       if(isMatch) {
-                //         return done(null, user);
-                //       } else {
-                //         return done(null, false, { message: 'Invalid password' });
-                //       }
-                // });
+                db.User.comparePassword(password, user.password, function(err, isMatch){
+                    if(err) {
+                        return done(err);
+                      }
+                      if(isMatch) {
+                        return done(null, user);
+                      } else {
+                        return done(null, false, { message: 'Invalid password' });
+                      }
+                });
                 return done(null, user);
             })
             .catch(err => {

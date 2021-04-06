@@ -10,6 +10,7 @@ const meetingCreate = function(req, res) {
     // var object = new db.Me
     // console.log(object);
     // console.log(object.dataValues);
+    
     const user = db.User.findOne({where : {id : 1}});
     db.Meeting.create({body : "test", host : user})
         .then(meeting => {
