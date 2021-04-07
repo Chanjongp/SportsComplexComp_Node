@@ -2,12 +2,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const db = require('../models');
 const bcrypt = require('bcrypt-nodejs');
 
-bcrypt.genSalt(20, function(err, result) {
-    if(err){
-        
-    }
-})
-
 module.exports = new LocalStrategy ({
     usernameField : "email",
     passwordField : "password",
