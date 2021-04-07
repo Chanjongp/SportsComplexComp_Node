@@ -24,16 +24,6 @@ module.exports = new LocalStrategy({
                         return done(null, false, req.flash("message", "password incorrect."));
                     }
                 })
-                // db.User.comparePassword(password, user.password, function(err, isMatch){
-                //     if(err) {
-                //         return done(err);
-                //       }
-                //       if(isMatch) {
-                //         return done(null, user);
-                //       } else {
-                //         return done(null, false, { message: 'Invalid password' });
-                //       }
-                // });
             })
 }
 )

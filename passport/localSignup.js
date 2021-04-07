@@ -19,7 +19,6 @@ module.exports = new LocalStrategy ({
                         bcrypt.hash(password, salt, null, function(err, passwordhash) { // 10 is salt
                             if(err) {console.log('bcrypt.has() error :', err.message); }
                             else {
-                                console.log(passwordhash);
                                 db.User.create({email, password : passwordhash})
                                 .then(user => {
                                     return done(null, user);
