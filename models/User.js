@@ -29,7 +29,7 @@ module.exports = ((sequelize, DataTypes) => {
                         callback(null, isMAtch);
                     }
                 });
-            }
+            },
         }
     });
     return User;

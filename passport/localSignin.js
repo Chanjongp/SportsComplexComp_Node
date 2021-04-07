@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('../models');
+const bcrypt = require('bcrypt-nodejs');
 
 module.exports = new LocalStrategy({
         usernameField: 'email',
@@ -13,20 +14,26 @@ module.exports = new LocalStrategy({
                     console.log("no user");
                     return done(null, false, req.flash("message", 'Incorrect Email.'));
                 }
-                db.User.comparePassword(password, user.password, function(err, isMatch){
+                bcrypt.compare(password, user.password, function(err, isMatch) {
                     if(err) {
-                        return done(err);
-                      }
-                      if(isMatch) {
+                        return done(null, false, req.flash("message", "bcrypt.compare() error."));}
+                    if(isMatch) {
                         return done(null, user);
-                      } else {
-                        return done(null, false, { message: 'Invalid password' });
-                      }
-                });
-                return done(null, user);
-            })
-            .catch(err => {
-                done(err);
+                    }
+                    else{ 
+                        return done(null, false, req.flash("message", "password incorrect."));
+                    }
+                })
+                // db.User.comparePassword(password, user.password, function(err, isMatch){
+                //     if(err) {
+                //         return done(err);
+                //       }
+                //       if(isMatch) {
+                //         return done(null, user);
+                //       } else {
+                //         return done(null, false, { message: 'Invalid password' });
+                //       }
+                // });
             })
 }
 )
