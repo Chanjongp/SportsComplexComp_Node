@@ -4,7 +4,7 @@ var passport = require('passport');
 
 
 //Success Callback
-userRouter.get('/', function(req, res) {
+userRouter.get('/success', function(req, res) {
     const user = req.user;
     return req.login(user, loginError => {
         if (loginError) {
@@ -21,13 +21,14 @@ userRouter.get('/error', function(req, res){
     return res.status(401).json({message : message[0]}).end();
 });
 
+
 // Signin
 userRouter.post('/login', passport.authenticate('local-signin', 
-    {successRedirect : '/',failureRedirect : '/error', failureFlash : true,}));
+    {successRedirect : '/accounts/success',failureRedirect : '/accounts/error', failureFlash : true,}));
 
 // Signup
 userRouter.post('/signup', passport.authenticate('local-signup', 
-    {successRedirect : '/',failureRedirect : '/error', failureFlash : true,}));
+    {successRedirect : '/accounts/success',failureRedirect : '/accounts/error', failureFlash : true,}));
 
 userRouter.get('/logout', (req, res) => {
     if(!req.user) {

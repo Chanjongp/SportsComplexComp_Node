@@ -7,7 +7,7 @@ const app = express();
 const flash = require('connect-flash');
 const meetingRouter = require('./routes/meetingRouter');
 const userRouter = require('./routes/userRouter');
-const baseRouter = require('./routes');
+// const baseRouter = require('./routes');
 const routes = require('./routes/router');
 
 app.use(                                 // 기본적인 세션설정
@@ -28,7 +28,7 @@ app.use(flash());
 
 app.use(routes.meeting, meetingRouter);
 app.use(routes.user, userRouter);
-app.use(routes.home, baseRouter);
+// app.use(routes.home, baseRouter);
 passportConfig(passport);
 
 module.exports = app;

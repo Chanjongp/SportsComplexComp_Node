@@ -8,15 +8,13 @@ describe('회원가입, 로그인 기능은', () => {
         return db.sequelize.sync({force: true})
     })
     describe('회원가입 시', () => {
-        it('유저 객체를 담은 배열로 응답한다.', (done) => {
+        it('성공 시, Success Url로 Redirect 후에, 유저 객체의 json으로 응답한다.', (done) => {
             request(app)
                 .post('/accounts/signup')
                 .send({email : "s94203@nate.com", password : "ckswhd123~"})
-                .expect(200)
-                .end((err, res) => {
-                    console.log(res);
-                    done();
-                })
+                .expect(302)
+                .expect('/', '/home')
+                .end(done)
         })
     })
 })
