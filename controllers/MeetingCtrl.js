@@ -12,6 +12,9 @@ const meetingCreate = function(req, res) {
     address = req.body.address
     location = req.body.location
     host = req.user.id
+    if(!title || !find_people || !body || !category || !address || !location ){
+        return res.status(400).json({message : "Incorrect Json Key"});
+    }
     db.Meeting.create({title, find_people, body, category, address, location, host})
         .then(meeting => {
             res.status(201).json(meeting);
