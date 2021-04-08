@@ -20,12 +20,12 @@ module.exports = new LocalStrategy ({
                             if(err) {console.log('bcrypt.has() error :', err.message); }
                             else {
                                 db.User.create({email, password : passwordhash})
-                                .then(user => {
-                                    return done(null, user);
-                                })
-                                .catch(err => {
-                                    done(err);
-                                });
+                                    .then(user => {
+                                        return done(null, user);
+                                    })
+                                    .catch(err => {
+                                        done(err);
+                                    });
                             }
                         })
                     }
