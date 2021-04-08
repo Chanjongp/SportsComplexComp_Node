@@ -2,17 +2,17 @@ const db = require('../models');
 const User = require('../models/User');
 
 const meetingCreate = function(req, res) {
-    // if(!req.isAuthenticated()){
-    //     return res.status(400).json({ message : "User is not Authenticated" });
-    // }
-    // const user = req.user;
-    // console.log(user.id)
-    // var object = new db.Me
-    // console.log(object);
-    // console.log(object.dataValues);
-    
-    const user = db.User.findOne({where : {id : 1}});
-    db.Meeting.create({body : "test", host : user})
+    if(!req.isAuthenticated()){
+        return res.status(401).json({ message : "User is not Authenticated" });
+    }
+    title = req.body.title
+    find_people = req.body.find_people
+    body = req.body.body
+    category = req.body.category
+    address = req.body.address
+    location = req.body.location
+    host = req.user.id
+    db.Meeting.create({title, find_people, body, category, address, location, host})
         .then(meeting => {
             res.status(201).json(meeting);
         })
