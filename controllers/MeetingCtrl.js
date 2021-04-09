@@ -1,10 +1,11 @@
 const db = require('../models');
 const User = require('../models/User');
+const { meeting } = require('../routes/router');
 
 const meetingCreate = function(req, res) {
-    // if(!req.isAuthenticated()){
-    //     return res.status(401).json({ message : "User is not Authenticated" }).end();
-    // }
+    if(!req.isAuthenticated()){
+        return res.status(401).json({ message : "User is not Authenticated" }).end();
+    }
     const title = req.body.title
     const find_people = req.body.find_people
     const body = req.body.body
@@ -29,6 +30,9 @@ const meetingCreate = function(req, res) {
 }
 
 const meetingUpdate = function(req, res) {
+    if(!req.isAuthenticated()){
+        return res.status(401).json({ message : "User is not Authenticated" }).end();
+    }
     const host = req.user.id;
     const title = req.body.title
     const find_people = req.body.find_people
@@ -40,13 +44,10 @@ const meetingUpdate = function(req, res) {
     if(!meeting_id){
         return res.status(400).json({message : "no meeting_id in JSON key."}).end();
     }
-    db.Meeting.findOne({where : {id: meeting_id}})
+    db.Meeting.findOne({where : {id: meeting_id, host}})
         .then(meeting => {
             if(!meeting) {
                 return res.status(404).json({message : "Meeting Object Not Found"}).end();
-            }
-            if(host !== meeting.host){
-                return res.status(401).json({message : "host is not matched."}).end();
             }
             if(title) { meeting.title = title; }
             if(find_people) { meeting.find_people = find_people }
@@ -67,8 +68,23 @@ const meetingUpdate = function(req, res) {
         })
 }
 
+const meetingDelete = function(req, res) {
+    if(!req.isAuthenticated()){
+        return res.status(401).json({ message : "User is not Authenticated" }).end();
+    }
+    const host = req.user.id;
+    const meeting_id = req.body.meeting_id;
+    if(!meeting_id){
+        return res.status(400).json({message : "no meeting_id in JSON key."}).end();
+    }
+    db.Meeting.destroy({where : {id: meeting_id, host}})
+        .then(() => {
+            res.status(204).end();
+        })
+}
 
 module.exports = {
     meetingCreate : meetingCreate,
     meetingUpdate : meetingUpdate,
+    meetingDelete : meetingDelete,
 }

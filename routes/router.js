@@ -15,6 +15,7 @@ const MEETING_ALL = "/list"
 const MEETING_DETAIL = "/:id";
 const MEETING_CREATE = "/create";
 const MEETING_UPDATE = "/update";
+const MEETING_DELETE = "/delete";
 
 const routes = {
     home : HOME,
@@ -30,6 +31,7 @@ const routes = {
     meetingDetail : MEETING_DETAIL,
     meetingCreate : MEETING_CREATE,
     meetingUpdate : MEETING_UPDATE,
+    meetingDelete : MEETING_DELETE,
 }
 
 module.exports = routes;

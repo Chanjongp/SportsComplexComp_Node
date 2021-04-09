@@ -8,4 +8,6 @@ meetingRouter.post(routes.meetingCreate, meetingCtrl.meetingCreate);
 
 meetingRouter.put(routes.meetingUpdate, meetingCtrl.meetingUpdate);
 
+meetingRouter.delete(routes.meetingDelete, meetingCtrl.meetingDelete);
+
 module.exports = meetingRouter;
