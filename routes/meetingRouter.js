@@ -10,4 +10,6 @@ meetingRouter.put(routes.meetingUpdate, meetingCtrl.meetingUpdate);
 
 meetingRouter.delete(routes.meetingDelete, meetingCtrl.meetingDelete);
 
+meetingRouter.get(routes.meetingAll, meetingCtrl.meetingAll);
+
 module.exports = meetingRouter;

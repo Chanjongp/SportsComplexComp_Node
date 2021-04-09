@@ -83,8 +83,16 @@ const meetingDelete = function(req, res) {
         })
 }
 
+const meetingAll = function(req, res) {
+    db.Meeting.findAll()
+        .then(meetings => {
+            res.status(200).json(meetings).end();
+        })
+}
+
 module.exports = {
     meetingCreate : meetingCreate,
     meetingUpdate : meetingUpdate,
     meetingDelete : meetingDelete,
+    meetingAll : meetingAll
 }
