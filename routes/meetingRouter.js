@@ -6,4 +6,6 @@ const meetingCtrl = require('../controllers/MeetingCtrl');
 
 meetingRouter.post(routes.meetingCreate, meetingCtrl.meetingCreate);
 
+meetingRouter.put(routes.meetingUpdate, meetingCtrl.meetingUpdate);
+
 module.exports = meetingRouter;
