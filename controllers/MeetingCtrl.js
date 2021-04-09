@@ -3,27 +3,63 @@ const User = require('../models/User');
 
 const meetingCreate = function(req, res) {
     if(!req.isAuthenticated()){
-        return res.status(401).json({ message : "User is not Authenticated" });
+        return res.status(401).json({ message : "User is not Authenticated" }).end();
     }
-    title = req.body.title
-    find_people = req.body.find_people
-    body = req.body.body
-    category = req.body.category
-    address = req.body.address
-    location = req.body.location
-    host = req.user.id
+    const title = req.body.title
+    const find_people = req.body.find_people
+    const body = req.body.body
+    const category = req.body.category
+    const address = req.body.address
+    const location = req.body.location
+    const host = req.user.id
+    if(isNaN(find_people)){
+        return res.status(400).json({message : "find_people has to be number."}).end()
+    }
     if(!title || !find_people || !body || !category || !address || !location ){
-        return res.status(400).json({message : "Incorrect Json Key"});
+        return res.status(400).json({message : "Incorrect Json Key"}).end();
     }
     db.Meeting.create({title, find_people, body, category, address, location, host})
         .then(meeting => {
-            res.status(201).json(meeting);
+            res.status(201).json(meeting).end();
         })
         .catch(err => {
-            res.status(400).json({err});
+            res.status(400).json({err}).end();
         })
 }
 
+const meetingUpdate = function(req, res) {
+    const host = req.user.id;
+    const title = req.body.title
+    const find_people = req.body.find_people
+    const body = req.body.body
+    const category = req.body.category
+    const address = req.body.address
+    const location = req.body.location
+    const meeting_id = req.body.meeting_id;
+
+    db.Meeting.findOne({id:meeting_id})
+        .then(meeting => {
+            if(host !== meeting.host){
+                return res.status(401).json({message : "host is not matched."}).end();
+            }
+            if(title) { meeting.title = title; }
+            if(find_people) { meeting.find_people = find_people }
+            if(body) { meeting.body = body; }
+            if(category) { meeting.category = category; }
+            if(address) { meeting.address = address; }
+            if(location) { meeting.location = location }
+            meeting.save()
+                .then(_ => {
+                    res.json(meeting);
+                })
+                .catch(err => {
+                    return res.status(409).json({message : err.message}).end();
+                })
+        })
+}
+
+
 module.exports = {
     meetingCreate : meetingCreate,
+    meetingUpdate : meetingUpdate,
 }
