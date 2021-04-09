@@ -90,9 +90,18 @@ const meetingAll = function(req, res) {
         })
 }
 
+const meetingDetail = function(req, res) {
+    const id = parseInt(req.params.id, 10);
+    db.Meeting.findOne({where : {id}})
+        .then(meeting => {
+            res.status(200).json(meeting).end();
+        })
+}
+
 module.exports = {
     meetingCreate : meetingCreate,
     meetingUpdate : meetingUpdate,
     meetingDelete : meetingDelete,
-    meetingAll : meetingAll
+    meetingAll : meetingAll,
+    meetingDetail : meetingDetail,
 }
