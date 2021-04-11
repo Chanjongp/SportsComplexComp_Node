@@ -77,4 +77,38 @@ describe('POST /meeting/create 는', () => {
                 });
        }) 
     })
+    describe('Meeting Create 실패 시', () => {
+        it('유저가 인증되지 않으면 401을 반환한다.', (done) => {
+            request(app)
+                .post('/meeting/create')
+                .send({location, title, find_people, body, category, address})
+                .expect(401)
+                .end((err, res) => {
+                    res.body.should.have.property('message', 'User is not Authenticated');
+                    done();
+                })
+        })
+        it('정확한 Json Key들이 없으면 400을 반환한다,', (done) => {
+            request(app)
+                .post('/meeting/create')
+                .send({find_people, body, category, address}) //location, title 누락
+                .set('Cookie', cookie)
+                .expect(400)
+                .end((err, res) => {
+                    res.body.should.have.property('message', 'Incorrect Json Key');
+                    done();
+                })
+        })
+        it('find_people field가 숫자가 아니면 400을 반환한다.', (done) => {
+            request(app)    
+                .post('/meeting/create')
+                .send({location, title, find_people : "acw", body, category, address})
+                .set('Cookie', cookie)
+                .expect(400)
+                .end((err, res) => {
+                    res.body.should.have.property('message', 'find_people has to be number');
+                    done();
+                })
+        })
+    })
 })

@@ -66,7 +66,7 @@
     "vary": "^1.1.2"
   },
   "scripts": {
-    "test": "NODE_ENV=development mocha test/user.spec.js -w",
+    "test": "NODE_ENV=development mocha test/test.spec.js -w",
     "start": "node www.js"
   },
   "repository": {

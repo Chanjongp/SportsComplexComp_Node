@@ -18,7 +18,7 @@ const meetingCreate = function(req, res) {
         return res.status(400).json({message : "Incorrect Json Key"}).end();
     }
     if(isNaN(find_people)){
-        return res.status(400).json({message : "find_people has to be number."}).end()
+        return res.status(400).json({message : "find_people has to be number"}).end()
     }
     db.Meeting.create({title, find_people, body, category, address, location, host})
         .then(meeting => {
