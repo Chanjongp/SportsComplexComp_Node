@@ -4,6 +4,7 @@ const db = require('../models');
 const should = require('should');
 
 // accounts
+
 var cookie;
 
 describe('회원가입, 로그인 기능은', () => {
@@ -69,9 +70,9 @@ describe('POST /meeting/create 는', () => {
            request(app)
                 .post('/meeting/create')
                 .send({location, title, find_people, body, category, address})
-                .expect(200)
                 .set('Cookie', cookie)
                 .end((err, res) => {
+                    res.status.should.be.equal(201)
                     res.body.should.have.properties({location, title, find_people, body, category, address})
                     done();
                 });
@@ -82,8 +83,8 @@ describe('POST /meeting/create 는', () => {
             request(app)
                 .post('/meeting/create')
                 .send({location, title, find_people, body, category, address})
-                .expect(401)
                 .end((err, res) => {
+                    res.status.should.be.equal(401)
                     res.body.should.have.property('message', 'User is not Authenticated');
                     done();
                 })
@@ -93,8 +94,8 @@ describe('POST /meeting/create 는', () => {
                 .post('/meeting/create')
                 .send({find_people, body, category, address}) //location, title 누락
                 .set('Cookie', cookie)
-                .expect(400)
                 .end((err, res) => {
+                    res.status.should.be.equal(400)
                     res.body.should.have.property('message', 'Incorrect Json Key');
                     done();
                 })
@@ -104,11 +105,71 @@ describe('POST /meeting/create 는', () => {
                 .post('/meeting/create')
                 .send({location, title, find_people : "acw", body, category, address})
                 .set('Cookie', cookie)
-                .expect(400)
+                .expect(401)
                 .end((err, res) => {
+                    res.status.should.be.equal(400)
                     res.body.should.have.property('message', 'find_people has to be number');
                     done();
                 })
+        })
+    })
+})
+
+describe('PUT /meeting/update 는', () => {
+    const location = "Test Location";
+    const title = "Test Title";
+    const find_people = 2;
+    const body = "Test Body";
+    const category = "Test Category";
+    const address = "Test Address";
+    describe('Meeting Update 성공 시', () => {
+        it('Update된 Meeting의 객체를 반환한다.', (done) => {
+            request(app)
+                .put('/meeting/update')
+                .send({location, title, body, category, address, meeting_id : 1})
+                .set('Cookie', cookie)
+                .expect(401)
+                .end((err, res) => {
+                    res.status.should.be.equal(200)
+                    res.body.should.have.properties({location, title, find_people, body, category, address})
+                    done();
+                })
+        })
+    })
+    describe('Meeting Update 실패 시', () => {
+        it('유저가 인증되지 않으면 401을 반환한다.', (done) => {
+            request(app)
+                .put('/meeting/update')
+                .send({location, title, find_people, body, category, address})
+                .end((err, res) => {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message', 'User is not Authenticated');
+                    done();
+                })
+        })
+        it('meeting_id가 field값으로 들어오지 않았을 때, 400을 반환한다', (done) => {
+            request(app)
+                .put('/meeting/update')
+                .send({location, title, find_people, body, category, address})
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'no meeting_id in JSON key');
+                    done();
+                })
+        })
+        it('meeting_id에 맞는 Meeting Object가 없을 때', (done) => {
+            request(app)
+                .put('/meeting/update')
+                .send({location, title, find_people, body, category, address, meeting_id : 100})
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(404);
+                    res.body.should.have.property('message', 'Meeting Object Not Found');
+                    done();
+                })
+
+
         })
     })
 })

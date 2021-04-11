@@ -42,7 +42,7 @@ const meetingUpdate = function(req, res) {
     const location = req.body.location
     const meeting_id =  req.body.meeting_id;
     if(!meeting_id){
-        return res.status(400).json({message : "no meeting_id in JSON key."}).end();
+        return res.status(400).json({message : "no meeting_id in JSON key"}).end();
     }
     db.Meeting.findOne({where : {id: meeting_id, host}})
         .then(meeting => {
