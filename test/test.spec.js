@@ -7,7 +7,7 @@ const should = require('should');
 
 var cookie;
 
-describe('회원가입, 로그인 기능은', () => {
+describe('회원가입, 로그인 기능 시', () => {
     before(() => {
         return db.sequelize.sync({force: true})
     })
@@ -57,7 +57,7 @@ describe('회원가입, 로그인 기능은', () => {
 
 // Meeting
 
-describe('POST /meeting/create 는', () => {
+describe('POST /meeting/create 로 요청 시', () => {
     const location = "서울";
     const title = "스쿼트 같이 하실 분?";
     const find_people = 2;
@@ -115,7 +115,7 @@ describe('POST /meeting/create 는', () => {
     })
 })
 
-describe('PUT /meeting/update 는', () => {
+describe('PUT /meeting/update 로 요청 시,', () => {
     const location = "Test Location";
     const title = "Test Title";
     const find_people = 2;
@@ -168,8 +168,22 @@ describe('PUT /meeting/update 는', () => {
                     res.body.should.have.property('message', 'Meeting Object Not Found');
                     done();
                 })
+        })
+    })
+})
 
-
+describe('DELETE /meeting/delete 는', () => {
+    describe('Meeting Delete 성공 시', () => {
+        it('성공 메세지를 반환한다', (done) => {
+            request(app)
+                .delete('/meeting/delete')
+                .send({meeting_id : 1})
+                .set('Cookie', cookie)
+                .end((err,res) => {
+                    res.status.should.be.equal(200);
+                    res.body.should.have.property('message', 'Delete Success!');
+                    done();
+                })
         })
     })
 })

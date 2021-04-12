@@ -75,12 +75,30 @@ const meetingDelete = function(req, res) {
     const host = req.user.id;
     const meeting_id = req.body.meeting_id;
     if(!meeting_id){
-        return res.status(400).json({message : "no meeting_id in JSON key."}).end();
+        return res.status(400).json({message : "no meeting_id in JSON key"}).end();
     }
-    db.Meeting.destroy({where : {id: meeting_id, host}})
-        .then(() => {
-            res.status(204).end();
+    db.Meeting.findOne({where : {id : meeting_id}})
+        .then(meeting => {
+            if(meeting.host !== host){
+                return res.status(400).json({message : "host not matching"})
+            }
+            meeting.destroy(); 
+            res.status(200).json({message : "Delete Success!"})
+            
         })
+        .catch(err => {
+            res.status(400).json({message : err.message}).end();
+        })
+    // db.Meeting.destroy({where : {id: meeting_id}})
+    //     .then(() => {
+    //         if(){
+    //             return res.status(400).json({message : "host not matching"}).end();
+    //         }
+    //         res.status(200).json({message : "Delete Success"}).end();
+    //     })
+    //     .catch(err => {
+    //         res.status(400).json({message : err.message}).end();
+    //     })
 }
 
 const meetingAll = function(req, res) {
