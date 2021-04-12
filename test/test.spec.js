@@ -172,7 +172,46 @@ describe('PUT /meeting/update 로 요청 시,', () => {
     })
 })
 
-describe('DELETE /meeting/delete 는', () => {
+describe('GET /meeting/list 로 요청 시', () => {
+    describe('GET Meeting List 성공 시', () => {
+        it('전체 Meeting Object를 가져온다.', (done) => {
+            request(app)
+                .get('/meeting/list')
+                .end((err, res) => {
+                    res.status.should.be.equal(200);
+                    res.body.should.be.instanceOf(Array);
+                    done();
+                })
+        })
+    })
+})
+
+describe('GET /meeting/:id 로 요청 시', () => {
+    describe('GET Meeting Detail 성공 시', () =>{
+        it('id의 Meeting Object를 가져온다.', (done) => {
+            request(app)
+                .get('/meeting/1')
+                .end((err, res) => {
+                    res.status.should.be.equal(200);
+                    res.body.should.have.property('id', 1);
+                    done();
+                })
+        })
+    })
+    describe('GET Meeting Detail 실패 시', () => {
+        it('id가 숫자로 들어오지 않았을 때', (done) => {
+            request(app)
+                .get('/meeting/aw')
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'Id is not number');
+                    done();
+                })
+        })
+    })
+})
+
+describe('DELETE /meeting/delete 요청 시', () => {
     describe('Meeting Delete 성공 시', () => {
         it('성공 메세지를 반환한다', (done) => {
             request(app)
@@ -187,3 +226,4 @@ describe('DELETE /meeting/delete 는', () => {
         })
     })
 })
+

@@ -106,13 +106,22 @@ const meetingAll = function(req, res) {
         .then(meetings => {
             res.status(200).json(meetings).end();
         })
+        .catch(err => {
+            res.status(400).json({message : err.message}).end();
+        })
 }
 
 const meetingDetail = function(req, res) {
     const id = parseInt(req.params.id, 10);
+    if (Number.isNaN(id)) {
+        return res.status(400).json({message : "Id is not number"}).end();
+    }
     db.Meeting.findOne({where : {id}})
         .then(meeting => {
             res.status(200).json(meeting).end();
+        })
+        .catch(err => {
+            res.status(400).json({message : err.message}).end();
         })
 }
 
