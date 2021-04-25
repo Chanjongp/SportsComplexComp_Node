@@ -227,3 +227,31 @@ describe('DELETE /meeting/delete 요청 시', () => {
     })
 })
 
+// Competition
+describe('POST /comp/create 요청 시,', () => {
+    const comp_type = "경쟁"; // 경쟁, 챌린지
+    const location = "서울";
+    const category = "푸쉬업";
+    const title = "푸쉬업 자신있는 사람 들어오세요.";
+    const ended_at = "2021-01-25";
+    const max_people = 100;
+    // const joined_people = [];
+    const require_money = 1000;
+    // const total_money = 0;
+    // joined_people, host 자동 생성
+    
+    describe('Competition Create 성공 시,', () => {
+        it('성공 메세지를 반환한다.', (done) => {
+            request(app)
+                .post('/comp/create')
+                .send({comp_type, location, category, title, ended_at, max_people, require_money}) 
+                .set('Cookie', cookie)
+                .end((err, res) => { 
+                    res.status.should.be.equal(200);
+                    res.body.should.have.properties({location, title, find_people, body, category, address});
+                    done();
+                })
+        })
+    })
+})
+

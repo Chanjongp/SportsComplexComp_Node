@@ -12,8 +12,8 @@ const meetingCreate = function(req, res) {
     const category = req.body.category
     const address = req.body.address
     const location = req.body.location
-    // const host = req.user.id
-    const host = 1
+    const host = req.user.id
+    // const host = 1
     if(!title || !find_people || !body || !category || !address || !location ){
         return res.status(400).json({message : "Incorrect Json Key"}).end();
     }
