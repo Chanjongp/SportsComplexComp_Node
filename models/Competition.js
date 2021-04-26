@@ -14,7 +14,7 @@ module.exports = ((sequelize, DataTypes) => {
             type : DataTypes.STRING(30),
         },
         ended_at : {
-            type : DataTypes.DATE(),
+            type : DataTypes.DATEONLY
             
         },
         max_people : {

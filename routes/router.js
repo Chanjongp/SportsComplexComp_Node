@@ -17,6 +17,13 @@ const MEETING_CREATE = "/create";
 const MEETING_UPDATE = "/update";
 const MEETING_DELETE = "/delete";
 
+const COMP = "/comp";
+const COMP_ALL = "/list";
+const COMP_DETAIL = "/:id";
+const COMP_CREATE = "/create";
+const COMP_JOIN = "/join";
+const COMP_DELETE = "/delete";
+
 const routes = {
     home : HOME,
     login : LOGIN,
@@ -32,6 +39,13 @@ const routes = {
     meetingCreate : MEETING_CREATE,
     meetingUpdate : MEETING_UPDATE,
     meetingDelete : MEETING_DELETE,
+
+    comp : COMP,
+    compAll : COMP_ALL,
+    compDetail : COMP_DETAIL,
+    compCreate : COMP_CREATE,
+    compJoin : COMP_JOIN,
+    compDelete : COMP_DELETE,
 }
 
 module.exports = routes;

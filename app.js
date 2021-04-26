@@ -6,6 +6,7 @@ const passportConfig = require('./passport');
 const app = express();
 const flash = require('connect-flash');
 const meetingRouter = require('./routes/meetingRouter');
+const compRouter = require('./routes/competitionRouter');
 const userRouter = require('./routes/userRouter');
 // const baseRouter = require('./routes');
 const routes = require('./routes/router');
@@ -26,6 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+app.use(routes.comp, compRouter);
 app.use(routes.meeting, meetingRouter);
 app.use(routes.user, userRouter);
 // app.use(routes.home, baseRouter);
