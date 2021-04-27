@@ -6,19 +6,34 @@ const should = require('should');
 // accounts
 
 var cookie;
+var cookie2;
 
 describe('회원가입, 로그인 기능 시', () => {
     before(() => {
         return db.sequelize.sync({force: true})
     })
     describe('회원가입 성공 시', () => {
-        it('Success Url로 Redirect 한다.', (done) => {
+        it('Success Url로 Redirect 한다.(1)', (done) => {
             request(app)
                 .post('/accounts/signup')
                 .send({email : "s94203@nate.com", password : "ckswhd123~"})
                 .expect(302)
                 .expect('Location', '/accounts/success')
-                .end(done);
+                .end((err, res) => {
+                    cookie = res.headers['set-cookie'];
+                    done();
+                });
+        })
+        it('Success Url로 Redirect 한다.(2)', (done) => {
+            request(app)
+                .post('/accounts/signup')
+                .send({email : "s94203@naver.com", password : "ckswhd123~"})
+                .expect(302)
+                .expect('Location', '/accounts/success')
+                .end((err, res) => {
+                    cookie2 = res.headers['set-cookie'];
+                    done();
+                });
         })
     })
     describe('회원가입 실패 시', () => {
@@ -37,10 +52,7 @@ describe('회원가입, 로그인 기능 시', () => {
                 .post('/accounts/login')
                 .send({email : "s94203@nate.com", password : "ckswhd123~"})
                 .expect('Location', '/accounts/success')
-                .end((err, res) => {
-                    cookie = res.headers['set-cookie'];
-                    done();
-                });
+                .end(done);
         })
     })
     describe('로그인 실패 시', () => {
@@ -54,6 +66,7 @@ describe('회원가입, 로그인 기능 시', () => {
         })
     })
 })
+
 
 // Meeting
 
@@ -146,6 +159,12 @@ describe('PUT /meeting/update 로 요청 시,', () => {
                     res.body.should.have.property('message', 'User is not Authenticated');
                     done();
                 })
+        })
+        it('meeintg_id의 host와 로그인된 user가 매칭이 안되면 401 반환,', (done) => {
+            request(app)
+                .put('/meeting/update')
+                .send({location, title, find_people, body, category, address})
+                
         })
         it('meeting_id가 field값으로 들어오지 않았을 때, 400을 반환한다', (done) => {
             request(app)
@@ -289,7 +308,7 @@ describe('POST /comp/create 요청 시,', () => {
     })
 })
 
-// describe('PUT /comp/create/?pk=1 요청 시,', () =>{
+// describe('PUT /comp/put/id:1 요청 시,', () =>{
 //     const comp_pk = 1;
 //     const money = 1000;
 //     describe('Competition PUT 성공 시,', () => {
