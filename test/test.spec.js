@@ -141,7 +141,6 @@ describe('PUT /meeting/update 로 요청 시,', () => {
                 .put('/meeting/update')
                 .send({location, title, body, category, address, meeting_id : 1})
                 .set('Cookie', cookie)
-                .expect(401)
                 .end((err, res) => {
                     res.status.should.be.equal(200)
                     res.body.should.have.properties({location, title, find_people, body, category, address})
@@ -164,8 +163,13 @@ describe('PUT /meeting/update 로 요청 시,', () => {
             request(app)
                 .put('/meeting/update')
                 .send({location, title, find_people, body, category, address})
-                
-        })
+                .set('Cookie', cookie2)
+                .end((err, res) => {
+                    res.status.should.be.equal(401);
+                    res.body.should.have.property('message', 'Meeting Host and User is not matched');
+                    done();
+                })
+            })
         it('meeting_id가 field값으로 들어오지 않았을 때, 400을 반환한다', (done) => {
             request(app)
                 .put('/meeting/update')
@@ -246,67 +250,67 @@ describe('DELETE /meeting/delete 요청 시', () => {
     })
 })
 
-// Competition
-describe('POST /comp/create 요청 시,', () => {
-    const comp_type = "경쟁"; // 경쟁, 챌린지
-    const location = "서울";
-    const category = "푸쉬업";
-    const title = "푸쉬업 자신있는 사람 들어오세요.";
-    const ended_at = "2021-01-25";
-    const max_people = 100;
-    // const joined_people = [];
-    const require_money = 1000;
-    // const total_money = 0;
-    // joined_people, host 자동 생성
+// // Competition
+// describe('POST /comp/create 요청 시,', () => {
+//     const comp_type = "경쟁"; // 경쟁, 챌린지
+//     const location = "서울";
+//     const category = "푸쉬업";
+//     const title = "푸쉬업 자신있는 사람 들어오세요.";
+//     const ended_at = "2021-01-25";
+//     const max_people = 100;
+//     // const joined_people = [];
+//     const require_money = 1000;
+//     // const total_money = 0;
+//     // joined_people, host 자동 생성
     
-    describe('Competition Create 성공 시,', () => {
-        it('성공 메세지를 반환한다.', (done) => {
-            request(app)
-                .post('/comp/create')
-                .send({comp_type, location, category, title, ended_at, max_people, require_money}) 
-                .set('Cookie', cookie)
-                .end((err, res) => { 
-                    res.status.should.be.equal(201);
-                    res.body.should.have.properties({comp_type, location, category, title, ended_at, max_people, require_money});
-                    done();
-                })
-        })
-    })
-    describe('Competition Create 실패 시,', () => {
-        it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
-            request(app)
-                .post('/comp/create')
-                .send({comp_type, location, category, title, ended_at, max_people, require_money}) 
-                .end((err, res) => {
-                    res.status.should.be.equal(401);
-                    res.body.should.have.property('message', 'User is not Authenticated');
-                    done();
-                })
-        })
-        it('정확한 Json Key들이 없으면 400을 반환한다.', (done) => {
-            request(app)   
-                .post('/comp/create')
-                .send({comp_type, location, category, title, ended_at}) // require_money, max_people 누락
-                .set('Cookie', cookie)
-                .end((err, res) => {
-                    res.status.should.be.equal(400);
-                    res.body.should.have.property('message', 'Incorrect Json Key');
-                    done();
-                })
-            })
-        it('max_people의 값이 숫자가 아닐 때, 400을 반환한다.', (done) => {
-            request(app)
-                .post('/comp/create')
-                .send({comp_type, location, category, title, ended_at, max_people : 'qw', require_money}) 
-                .set('Cookie', cookie)
-                .end((err, res) => {
-                    res.status.should.be.equal(400);
-                    res.body.should.have.property('message', 'max_people has to be number');
-                    done();
-                }) 
-        })
-    })
-})
+//     describe('Competition Create 성공 시,', () => {
+//         it('성공 메세지를 반환한다.', (done) => {
+//             request(app)
+//                 .post('/comp/create')
+//                 .send({comp_type, location, category, title, ended_at, max_people, require_money}) 
+//                 .set('Cookie', cookie)
+//                 .end((err, res) => { 
+//                     res.status.should.be.equal(201);
+//                     res.body.should.have.properties({comp_type, location, category, title, ended_at, max_people, require_money});
+//                     done();
+//                 })
+//         })
+//     })
+//     describe('Competition Create 실패 시,', () => {
+//         it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
+//             request(app)
+//                 .post('/comp/create')
+//                 .send({comp_type, location, category, title, ended_at, max_people, require_money}) 
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(401);
+//                     res.body.should.have.property('message', 'User is not Authenticated');
+//                     done();
+//                 })
+//         })
+//         it('정확한 Json Key들이 없으면 400을 반환한다.', (done) => {
+//             request(app)   
+//                 .post('/comp/create')
+//                 .send({comp_type, location, category, title, ended_at}) // require_money, max_people 누락
+//                 .set('Cookie', cookie)
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(400);
+//                     res.body.should.have.property('message', 'Incorrect Json Key');
+//                     done();
+//                 })
+//             })
+//         it('max_people의 값이 숫자가 아닐 때, 400을 반환한다.', (done) => {
+//             request(app)
+//                 .post('/comp/create')
+//                 .send({comp_type, location, category, title, ended_at, max_people : 'qw', require_money}) 
+//                 .set('Cookie', cookie)
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(400);
+//                     res.body.should.have.property('message', 'max_people has to be number');
+//                     done();
+//                 }) 
+//         })
+//     })
+// })
 
 // describe('PUT /comp/put/id:1 요청 시,', () =>{
 //     const comp_pk = 1;
@@ -345,6 +349,17 @@ describe('POST /comp/create 요청 시,', () => {
 //                     res.body.should.have.property('message', 'Competition Object Not Found');
 //                     done();
 //                 })
+//         })
+//         it('Url Parameter로 들어온 id가 숫자가 아닐 때, 에러 메세지를 반환한다.', (done) => {
+//             request(app)
+//             .put('/comp/join')
+//             .send({comp_pk, money})
+//             .set('Cookie', cookie)
+//             .end((err, res) => {
+//                 res.status.should.be.equal(400);
+//                 res.body.should.have.property('message', 'Id is not number');
+//                 done();
+//             })          
 //         })
 //     })
 // })

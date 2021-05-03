@@ -49,7 +49,7 @@ const meetingUpdate = function(req, res) {
             if(!meeting) {
                 return res.status(404).json({message : "Meeting Object Not Found"}).end();
             }
-            if(meeting.host.id != host){
+            if(meeting.host != host){
                 return res.status(401).json({message : "Meeting Host and User is not matched"})
             }
             if(title) { meeting.title = title; }
