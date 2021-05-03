@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt-nodejs');
 
+
 module.exports = ((sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         email : {
@@ -15,7 +16,12 @@ module.exports = ((sequelize, DataTypes) => {
         location : {
             type : DataTypes.STRING(10),
             defaultValue : '서울'
-        }
-    }, );
+        },
+        money : {
+            type : DataTypes.INTEGER,
+            defaultValue : '1000'
+        }  
+    },
+     );
     return User;
 });

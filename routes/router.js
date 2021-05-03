@@ -21,7 +21,7 @@ const COMP = "/comp";
 const COMP_ALL = "/list";
 const COMP_DETAIL = "/:id";
 const COMP_CREATE = "/create";
-const COMP_JOIN = "/join";
+const COMP_JOIN = "/join/:id";
 const COMP_DELETE = "/delete";
 
 const routes = {

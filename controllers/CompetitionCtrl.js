@@ -28,21 +28,25 @@ const compCreate = function(req, res) {
         })
 }
 
-const compUpdate = function(req, res) {
+const compJoin = function(req, res) {
     if(!req.isAuthenticated()){
         return res.status(401).json({ message : "User is not Authenticated" }).end();
     }
     const id = parseInt(req.params.id, 10);
-    if(!id){
-        return res.status(400).json({ message : 'Competition Object Not Found'})
-    }
     if (Number.isNaN(id)) {
         return res.status(400).json({message : "Id is not number"}).end();
     }
+    db.Competition.findOne({where : {id}})
+        .then(comp => {
+            if(!comp){
+                return res.status(404).json({ message : 'Competition Object Not Found'});
+            }
+            comp.total_money += comp.require_money;
+        })
 }
 
 
 module.exports = {
     compCreate: compCreate,
-    compUpdate : compUpdate,
+    compJoin : compJoin,
 }
