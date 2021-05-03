@@ -135,6 +135,7 @@ describe('PUT /meeting/update 로 요청 시,', () => {
     const body = "Test Body";
     const category = "Test Category";
     const address = "Test Address";
+    const meeting_id =  1;
     describe('Meeting Update 성공 시', () => {
         it('Update된 Meeting의 객체를 반환한다.', (done) => {
             request(app)
@@ -162,7 +163,7 @@ describe('PUT /meeting/update 로 요청 시,', () => {
         it('meeintg_id의 host와 로그인된 user가 매칭이 안되면 401 반환,', (done) => {
             request(app)
                 .put('/meeting/update')
-                .send({location, title, find_people, body, category, address})
+                .send({location, title, find_people, body, category, address, meeting_id})
                 .set('Cookie', cookie2)
                 .end((err, res) => {
                     res.status.should.be.equal(401);
