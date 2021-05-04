@@ -1,3 +1,4 @@
+const { request } = require('express');
 const db = require('../models');
 
 const compCreate = function(req, res) {
@@ -17,9 +18,12 @@ const compCreate = function(req, res) {
         return res.status(400).json({message : "Incorrect Json Key"}).end();
     }
     if(isNaN(max_people)){
-        return res.status(400).json({message : "max_people has to be number"}).end()
+        return res.status(400).json({message : "max_people has to be number"}).end();
     }
-    db.Competition.create({comp_type, location, category, title, ended_at, max_people, require_money, host})
+    if(req.user.money < require_money){
+        return res.status(400).json({message : "Check your money to join your own competition"}).end();
+    }
+    db.Competition.create({comp_type, location, category, title, ended_at, max_people, require_money, total_money : 0, host})
         .then(comp => {
             res.status(201).json(comp).end();
         })

@@ -310,64 +310,76 @@ describe('POST /comp/create 요청 시,', () => {
                     done();
                 }) 
         })
+        it('host의 money가 require_money보다 부족할 경우, 400과 에러 메세지를 반환한다.', (done) => {
+            request(app)
+                .post('/comp/create')
+                .send({comp_type, location, category, title, ended_at, max_people, require_money : 10000000}) 
+                .set('Cookie', cookie)
+                .end((err, res) => {
+                    res.status.should.be.equal(400);
+                    res.body.should.have.property('message', 'Check your money to join your own competition');
+                    done();
+                })
+
+        })
     })
 })
 
-describe('PUT /comp/join/:id 요청 시,', () =>{
-    const money = 1000;
-    describe('Competition PUT 성공 시,', () => {
-        it('user id와 경쟁의 total_money를 반환한다.', (done) => {
-            request(app)
-                .put('/comp/join/1')
-                .set('Cookie', cookie)
-                .send({money})
-                .end((err, res) => {
-                    res.status.should.be.equal(200);
-                    res.body.should.have.property('message', 'Join Success!');
-                    done();
-                })
-        })
-    })
-    describe('Competition PUT 실패 시,', () => {
-        it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
-            request(app)
-                .put('/comp/join/1')
-                .send({money})
-                .end((err, res) => {
-                    res.status.should.be.equal(401);
-                    res.body.should.have.property('message', 'User is not Authenticated');
-                    done();
-                })
-        })
-        it('Competition PK에 해당하는 객체가 없을 시, 에러 메세지를 반환한다.', (done) => {
-            request(app)
-                .put('/comp/join/2')
-                .send({money})
-                .set('Cookie', cookie)
-                .end((err, res) => {
-                    res.status.should.be.equal(400);
-                    res.body.should.have.property('message', 'Competition Object Not Found');
-                    done();
-                })
-        })
-        it('Url Parameter로 들어온 id가 숫자가 아닐 때, 에러 메세지를 반환한다.', (done) => {
-            request(app)
-                .put('/comp/join/asw')
-                .send({money})
-                .set('Cookie', cookie)
-                .end((err, res) => {
-                    res.status.should.be.equal(400);
-                    res.body.should.have.property('message', 'Id is not number');
-                    done();
-                })          
-        })
-        // it('이미 참여한 사람이면, 에러 메세지를 반환한다.', (done) => {
-        //     request(app)
-        //         .put('/comp/join/1')
-        //         .send({})
-        // })
-    })
-})
+// describe('PUT /comp/join/:id 요청 시,', () =>{
+//     const money = 1000;
+//     describe('Competition PUT 성공 시,', () => {
+//         it('user id와 경쟁의 total_money를 반환한다.', (done) => {
+//             request(app)
+//                 .put('/comp/join/1')
+//                 .set('Cookie', cookie)
+//                 .send({money})
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(200);
+//                     res.body.should.have.property('message', 'Join Success!');
+//                     done();
+//                 })
+//         })
+//     })
+//     describe('Competition PUT 실패 시,', () => {
+//         it('유저 인증 실패 시, 에러 메세지를 반환한다.', (done) => {
+//             request(app)
+//                 .put('/comp/join/1')
+//                 .send({money})
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(401);
+//                     res.body.should.have.property('message', 'User is not Authenticated');
+//                     done();
+//                 })
+//         })
+//         it('Competition PK에 해당하는 객체가 없을 시, 에러 메세지를 반환한다.', (done) => {
+//             request(app)
+//                 .put('/comp/join/2')
+//                 .send({money})
+//                 .set('Cookie', cookie)
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(400);
+//                     res.body.should.have.property('message', 'Competition Object Not Found');
+//                     done();
+//                 })
+//         })
+//         it('Url Parameter로 들어온 id가 숫자가 아닐 때, 에러 메세지를 반환한다.', (done) => {
+//             request(app)
+//                 .put('/comp/join/asw')
+//                 .send({money})
+//                 .set('Cookie', cookie)
+//                 .end((err, res) => {
+//                     res.status.should.be.equal(400);
+//                     res.body.should.have.property('message', 'Id is not number');
+//                     done();
+//                 })          
+//         })
+//         // it('이미 참여한 사람이면, 에러 메세지를 반환한다.', (done) => {
+//         //     request(app)
+//         //         .put('/comp/join/1')
+//         //         .send({})
+//         // })
+//     })
+// })
 
 // describe('DELETE /comp/delete/?pk=1 요청 시,', () =>{
 //     const comp_pk = 1;
